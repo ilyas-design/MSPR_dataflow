@@ -1,39 +1,41 @@
-# Nettoyage du Dataset Nutritionnel
+# MSPR Dataflow Project - HealthAI Coach
 
-## Description
+## Project Overview
 
-Script de nettoyage pour le dataset `daily_food_nutrition_dataset.csv`.
+This project is part of the MSPR (Mise en Situation Professionnelle Reconstituée) for the HealthAI Coach platform. The goal is to create a complete backend system that collects, cleans, transforms, and stores heterogeneous data from multiple sources.
 
-## Transformations effectuées
+## What Was Done
 
-1. **Suppression des lignes vides** - Supprime les lignes complètement vides
+### Data Fusion
 
-2. **Valeurs manquantes numériques** - Remplacement par la médiane
-   - Colonnes : Calories, Protein, Carbohydrates, Fat, Fiber, Sugars, Sodium, Cholesterol, Water_Intake
+Three CSV datasets were successfully fused using Python:
 
-3. **Valeurs manquantes textuelles** - Remplacement par la valeur la plus fréquente
-   - Colonnes : Food_Item, Category, Meal_Type
+1. **daily_food_nutrition_dataset_cleaned.csv** - Contains daily food intake and nutritional values
+2. **diet_recommendations_clean.csv** - Contains health profiles and dietary recommendations
+3. **gym_members_exercise_tracking_clean.csv** - Contains exercise tracking and fitness metrics
 
-4. **Dates manquantes** - Suppression des lignes sans date
+### Fusion Process
 
-5. **Conversion des types** - Date en datetime, colonnes numériques en float, User_ID en int
+The fusion script (`fuse_data.py`) performs the following operations:
 
-6. **Suppression des doublons** - Élimine les lignes identiques
+- Standardizes column names and data types across datasets
+- Converts units (e.g., height from meters to centimeters)
+- Matches records based on demographic attributes (age, gender, weight, height, BMI)
+- Aggregates food data by user ID
+- Creates multiple fusion strategies for different use cases
 
-7. **Valeurs négatives** - Remplace par 0 (impossible pour la nutrition)
+### Generated Files
 
-8. **Nettoyage du texte** - Supprime les espaces, remplace les chaînes vides par 'Unknown'
+The following fused datasets were created in the `fused_data/` folder:
 
-9. **Cohérence logique** - Vérifie que Fibres ≤ Glucides et Sucres ≤ Glucides
+1. **diet_gym_merged.csv** - Diet and Gym data merged on demographic attributes
+2. **user_profiles_merged.csv** - Comprehensive user profiles combining diet and gym information
+3. **food_aggregated.csv** - Food data aggregated by user with totals and averages
+4. **comprehensive_fusion.csv** - All three datasets concatenated with source labels
+5. **smart_fusion.csv** - Smart matching of diet records with gym records based on demographic similarity
 
-## Utilisation
+## Data Sources
 
-```bash
-python clean_dataset.py
-```
-
-## Fichiers
-
-- **Source** : `daily_food_nutrition_dataset.csv`
-- **Script** : `clean_dataset.py`
-- **Sortie** : `daily_food_nutrition_dataset_cleaned.csv`
+- **Daily Food & Nutrition Dataset** (Kaggle)
+- **Diet Recommendations Dataset** (Kaggle)
+- **Gym Members Exercise Dataset** (Kaggle)
